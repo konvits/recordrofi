@@ -2,14 +2,15 @@
 
 desksource="$(pactl list short sources | grep .monitor | awk '{print $2}')"
 micsource="default"
-TMPDIR="$HOME/vids/tmp"
-DESTDIR="$HOME/vids/ffmpeg"
+TMPDIR="/tmp/recordrofi"
+XDGVIDEOSDIR="`grep "VIDEOS" $XDG_CONFIG_HOME/user-dirs.dirs | cut -d '"' -f2 | cut -d '"' -f1`"
+DESTDIR="`eval "echo $XDGVIDEOSDIR"/ffmpeg`"
 
-themedir="$HOME/.config/rofi"
+themedir="$HOME/.local/share/rofi/themes"
 themename='recorder'
 
-[[ ! -f $TMPDIR ]] && mkdir -p $TMPDIR
-[[ ! -f $DESTDIR ]] && mkdir -p $DESTDIR
+[[ ! -f $TMPDIR ]] && mkdir -p "$TMPDIR"
+[[ ! -f $DESTDIR ]] && mkdir -p "$DESTDIR"
 
 prompt() {
 	rofi -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
@@ -67,6 +68,8 @@ micrec() {
 
 startrec() {
 	SIZE="$(echo -e "Fullscreen\nArea" | prompt "Fullscreen or Area? (Esc = no video)")"
+  [[ $SIZE = "" ]] && notify-send "$0" "Bye-bye" && exit
+
 	DESKAUDIO="$(echo -e "Yes\nNo" | prompt "Record desktop audio?")"
 	MIC="$(echo -e "Yes\nNo" | prompt "Record microphone?")"
 
@@ -94,7 +97,7 @@ startrec() {
 
 mergefiles() {
 	sleep 5
-	cd $TMPDIR
+	cd "$TMPDIR"
 
 	COUNT=0
 	for f in *.mp3; do
@@ -125,7 +128,7 @@ stoprec() {
 	then
 		killall ffmpeg
 		mergefiles
-		rm /tmp/recname
+		rm /tmp/recname $TMPDIR
 	fi
 }
 

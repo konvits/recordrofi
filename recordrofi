@@ -68,7 +68,7 @@ micrec() {
 
 startrec() {
 	SIZE="$(echo -e "Fullscreen\nArea" | prompt "Fullscreen or Area? (Esc = no video)")"
-  [[ $SIZE = "" ]] && notify-send "$0" "Bye-bye" && exit
+	[[ $SIZE = "" ]] && notify-send "$0" "Bye-bye" && exit
 
 	DESKAUDIO="$(echo -e "Yes\nNo" | prompt "Record desktop audio?")"
 	MIC="$(echo -e "Yes\nNo" | prompt "Record microphone?")"

@@ -7,7 +7,6 @@ $ git clone https://github.com/konvits/recordrofi
 $ cd recordrofi
 $ chmod +x ./install.sh recordrofi
 $ ./install.sh
-$ sudo mv recordrofi /usr/bin
 ```
 Have fun!
 ```
